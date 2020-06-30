@@ -7,6 +7,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -105,6 +107,24 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure for loadMoreData! ", throwable);
             }
         }, tweets.get(tweets.size() - 1).id);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if they are present
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        // true must be returned by this method for the menu to be displayed
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.compose) {
+            // The compose icon has been selected
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void populateHomeTimeline() {
