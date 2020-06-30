@@ -12,6 +12,7 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public Long id;
 
     // Create a Tweet object from info we get from retrieved JSON object
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
@@ -20,6 +21,7 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.id = jsonObject.getLong("id");
 
         return tweet;
     }
