@@ -26,7 +26,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         app:counterEnabled="true"
-        app:counterMaxLength="140">
+        app:counterMaxLength="140"
+        app:counterOverflowTextColor="@color/color_red">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCompose"
