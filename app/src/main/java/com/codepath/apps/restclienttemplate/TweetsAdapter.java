@@ -159,7 +159,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 Glide.with(context)
                         .load(tweet.mediaUrl)
                         .transform(new RoundedCornersTransformation(30, 10))
-                        .override(150, 150)
                         .centerCrop()
                         .into(ivMedia);
             }
