@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -42,6 +43,9 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        // Find the RecyclerView
+        rvTweets = findViewById(R.id.rvTweets);
+
         client = TwitterApp.getRestClient(this);
 
         // Get reference to swipe container
@@ -59,9 +63,6 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-        // Find the RecyclerView
-        rvTweets = findViewById(R.id.rvTweets);
 
         // Init the list of Tweets and adapter
         tweets = new ArrayList<>();
@@ -83,9 +84,10 @@ public class TimelineActivity extends AppCompatActivity {
         // Adds scroll listener to the recycler view
         rvTweets.addOnScrollListener(scrollListener);
 
+        DividerItemDecoration itemDecor = new DividerItemDecoration(rvTweets.getContext(), DividerItemDecoration.HORIZONTAL);
+        rvTweets.addItemDecoration(itemDecor);
 
         populateHomeTimeline();
-
     }
 
     private void loadMoreData() {

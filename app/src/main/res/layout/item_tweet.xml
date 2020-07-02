@@ -21,18 +21,71 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/tvName"
         android:text="TextView"
-        tools:text="pgarza917" />
+        tools:text="\@pgarza917" />
 
     <TextView
         android:id="@+id/tvBody"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvScreenName"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:autoLink="all"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:text="This is my tweet!" />
+
+    <TextView
+        android:id="@+id/tvRelativeTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@+id/tvDot"
+        android:text="8m" />
+
+    <ImageView
+        android:id="@+id/ivMedia"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tvBody"
+        android:layout_margin="4dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvBody"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="2dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        tools:text="Pablo Garza" />
+
+    <TextView
+        android:id="@+id/tvDot"
+        android:layout_width="8dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="-13dp"
+        android:layout_toEndOf="@+id/tvScreenName"
+        android:text="@string/dot"
+        android:textSize="24sp" />
+
 </RelativeLayout>

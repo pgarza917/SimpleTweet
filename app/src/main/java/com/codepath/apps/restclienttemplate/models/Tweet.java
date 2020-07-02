@@ -1,12 +1,17 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.text.format.DateUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Parcel
 public class Tweet {
@@ -15,6 +20,8 @@ public class Tweet {
     public String createdAt;
     public User user;
     public Long id;
+    // For now, we will only be displaying the first image in media
+    public String mediaUrl;
 
     // Empty constructor needed by Parceler Library
     public Tweet() {}
@@ -27,6 +34,17 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.id = jsonObject.getLong("id");
+        tweet.mediaUrl = "";
+
+        // Checking to see if there is any attached media and confirming that
+        // it is a photo
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if (entities.has("media")) {
+            JSONObject media = entities.getJSONArray("media").getJSONObject(0);
+            if (media.getString("type").equals("photo")) {
+                tweet.mediaUrl = media.getString("media_url_https");
+            }
+        }
 
         return tweet;
     }
