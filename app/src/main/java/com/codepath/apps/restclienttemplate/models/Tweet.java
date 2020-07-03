@@ -43,6 +43,9 @@ public class Tweet {
     @ColumnInfo
     public String mediaUrl;
 
+    @ColumnInfo
+    public boolean liked;
+
     // Empty constructor needed by Parceler Library
     public Tweet() {}
 
@@ -57,6 +60,7 @@ public class Tweet {
         User user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.user = user;
         tweet.userId = user.id;
+        tweet.liked = jsonObject.getBoolean("favorited");
 
         // Checking to see if there is any attached media and confirming that
         // it is a photo

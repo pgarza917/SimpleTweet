@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,7 +21,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
@@ -28,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
 
 // Second step is to extend the RecyclerView adapter but parameterize it with the ViewHolder we
 // defined in the first step
@@ -37,11 +42,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     // generated and you just need to fill them out and create a constructor for the adapter
     Context context;
     List<Tweet> tweets;
+    TwitterClient client;
 
     // Pass context and list of tweets into adapter
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
         this.tweets = tweets;
+        this.client = TwitterApp.getRestClient(context);
     }
 
     // For each row, inflate the layout
@@ -121,8 +128,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     // Define a View Holder (starting point)
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        ImageButton ibLike;
         ImageView ivProfileImage;
         ImageView ivMedia;
         TextView tvName;
@@ -135,12 +143,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Get references to all the components in the passed ItemView
+            ibLike = itemView.findViewById(R.id.ibLike);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             ivMedia = itemView.findViewById(R.id.ivMedia);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvName = itemView.findViewById(R.id.tvName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
+
+            ibLike.setOnClickListener(this);
         }
 
         // Bind data stored in our Tweet model into the itemView of the view holder
@@ -166,6 +177,45 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             }
             else {
                 ivMedia.setVisibility(View.GONE);
+            }
+
+            if(tweet.liked) {
+                ibLike.setColorFilter(ContextCompat.getColor(context, R.color.red));
+            }
+            else {
+                ibLike.setColorFilter(ContextCompat.getColor(context, R.color.grey));
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(view.getId() == R.id.ibLike) {
+                final int position = getAdapterPosition();
+                Tweet tweet = tweets.get(position);
+                JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.i(TAG, "onSuccess to unlike tweet");
+                        try {
+                            Tweet updatedTweet = Tweet.fromJson(json.jsonObject);
+                            tweets.remove(position);
+                            tweets.add(position, updatedTweet);
+                            notifyItemChanged(position);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.e(TAG, "onFailure: " + response, throwable);
+                    }
+                };
+                if(tweet.liked) {
+                    client.unlikeTweet(tweet.id, handler);
+                } else {
+                    client.likeTweet(tweet.id, handler);
+                }
             }
         }
     }
