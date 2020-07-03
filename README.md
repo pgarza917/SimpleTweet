@@ -41,6 +41,8 @@ The following **stretch** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Users can see real-time count of likes
+* [x] Dividers implemented between tweets in the timeline
+* [x] Character counter turns red when user goes over character limit
 
 ## Video Walkthrough
 
