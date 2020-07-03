@@ -105,7 +105,7 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
 
-        DividerItemDecoration itemDecor = new DividerItemDecoration(rvTweets.getContext(), DividerItemDecoration.HORIZONTAL);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(rvTweets.getContext(), DividerItemDecoration.VERTICAL);
         rvTweets.addItemDecoration(itemDecor);
 
         populateHomeTimeline();

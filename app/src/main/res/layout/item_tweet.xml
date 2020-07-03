@@ -56,7 +56,7 @@
         android:layout_height="150dp"
         android:layout_below="@+id/tvBody"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
         android:layout_toEndOf="@+id/ivProfileImage"
@@ -93,10 +93,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivMedia"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="108dp"
         android:background="@android:drawable/screen_background_light_transparent"
         android:foregroundTint="#F44336"
         app:srcCompat="@drawable/ic_vector_heart" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMedia"
+        android:layout_marginStart="-104dp"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/ibLike"
+        tools:text="5.1k" />
 
 </RelativeLayout>

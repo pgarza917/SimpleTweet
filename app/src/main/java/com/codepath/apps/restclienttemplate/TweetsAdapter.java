@@ -127,6 +127,32 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         return "";
     }
 
+    // Method to turn large integer counts into shorter format, e.g. 50,125 --> 50.1k
+    public String getFormattedCount(long count) {
+        String formattedCount = "";
+        String quantifier = "";
+        int powerOfTen = 1;
+        if(count < 10000) {
+            formattedCount = String.format("%d", count);
+        } else if(count < 1000000) {
+            powerOfTen = 1000;
+            quantifier = "K";
+        } else if (count < 10000000) {
+            powerOfTen = 1000000;
+            quantifier = "M";
+        }
+
+        long remainder = count % powerOfTen;
+        String remainderDigit = Long.toString(remainder).substring(0, 1);
+        if(remainderDigit.equals("0")) {
+            formattedCount = String.format("%d%s", count / powerOfTen, quantifier);
+        } else {
+            formattedCount = String.format("%d.%s%s", count / powerOfTen, remainderDigit, quantifier);
+        }
+
+        return formattedCount;
+    }
+
     // Define a View Holder (starting point)
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -137,6 +163,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvBody;
         TextView tvRelativeTimestamp;
+        TextView tvLikes;
 
         // The itemView passed in is the representation of one row in the RecyclerView, i.e. a Tweet,
         // and, thus, contains all the components we defined in one row (item_tweet.xml)
@@ -150,7 +177,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
+            tvLikes = itemView.findViewById(R.id.tvLikes);
 
+            // Set a click listener on the like button
             ibLike.setOnClickListener(this);
         }
 
@@ -159,6 +188,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvRelativeTimestamp.setText(getRelativeTimeAgo(tweet.createdAt));
             tvBody.setText(tweet.body);
             tvName.setText(tweet.user.name);
+            String likeCount = getFormattedCount(tweet.likeCount);
+            tvLikes.setText(likeCount);
             // Insert an '@' before screen name
             String fullScreenName = String.format("@%s", tweet.user.screenName);
             tvScreenName.setText(fullScreenName);
@@ -179,11 +210,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivMedia.setVisibility(View.GONE);
             }
 
+            // Change the color of the like button and like count based on whether the tweet
+            // has been "liked" by the user
             if(tweet.liked) {
                 ibLike.setColorFilter(ContextCompat.getColor(context, R.color.red));
+                tvLikes.setTextColor(ContextCompat.getColor(context, R.color.red));
             }
             else {
                 ibLike.setColorFilter(ContextCompat.getColor(context, R.color.grey));
+                tvLikes.setTextColor(ContextCompat.getColor(context, R.color.grey));
             }
         }
 
